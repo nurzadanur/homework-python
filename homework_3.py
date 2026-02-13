@@ -91,3 +91,89 @@ best_friend1 = BestFriend("Алина", "05.02.2001", "программист", 
 people = [classmate1, classmate2, friend1, friend2, best_friend1]
 for person in people:
     person.introduce()
+
+
+
+    # Изменение приватных атрибутов через сеттеры
+    dog.set_name("Max")
+    dog.set_age(4)
+    cat.set_name("Luna")
+    cat.set_age(3)
+
+    # Проверка изменений
+    print(f"{dog.get_name()} is {dog.get_age()} years old and says: {dog.make_sound()}")
+    print(f"{cat.get_name()} is {cat.get_age()} years old and says: {cat.make_sound()}")
+
+
+
+cat.set_age(2)
+print(cat.get_age())
+
+# Базовый класс Animal
+class Animal:
+    def __init__(self, name, age):
+        self.__name = name
+        self.__age = age
+
+    # Свойство name
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        self.__name = value
+
+    # Свойство age
+    @property
+    def age(self):
+        return self.__age
+
+    @age.setter
+    def age(self, value):
+        if value >= 0:
+            self.__age = value
+        else:
+            print("Возраст не может быть отрицательным.")
+
+    # Метод для демонстрации полиморфизма
+    def make_sound(self):
+        return "Some generic animal sound"
+
+# Класс-наследник Dog
+class Dog(Animal):
+    def make_sound(self):
+        return "Woof!"
+
+# Класс-наследник Cat
+class Cat(Animal):
+    def make_sound(self):
+        return "Meow!"
+
+# Создание объектов
+dog = Dog("Buddy", 3)
+cat = Cat("Whiskers", 2)
+
+# Вывод звуков животных
+print(f"{dog.name} says: {dog.make_sound()}")
+print(f"{cat.name} says: {cat.make_sound()}")
+
+# Изменение атрибутов через свойства
+dog.name = "Max"
+dog.age = 4
+cat.name = "Luna"
+cat.age = 3
+
+# Проверка изменений
+print(f"{dog.name} is {dog.age} years old and says: {dog.make_sound()}")
+print(f"{cat.name} is {cat.age} years old and says: {cat.make_sound()}")
+
+
+
+
+
+
+
+
+
+

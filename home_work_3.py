@@ -1,7 +1,9 @@
+from datetime import datetime
+
 class Person:
     def __init__(self, name, birth_date, occupation, higher_education):
         self.name = name
-        self.birth_date = birth_date
+        self.__birth_date =  datetime.strptime(birth_date, "%d.%m.%Y")
         self.__occupation = occupation
         self.__higher_education = higher_education
 
@@ -12,11 +14,19 @@ class Person:
     @property
     def higher_education(self):
         return self.__higher_education
+    @property
+    def age(self):
+        today = datetime.today()
+        age = today.year - self.__birth_date.year
+
+        if (today.month, today.day) < (self.__birth_date.month, self.__birth_date.day):
+            age -= 1
+        return age
 
     def introduce(self):
         education = "есть" if self.higher_education else "нет"
         print(f"Привет, меня зовут {self.name}. "
-              f"я родился {self.birth_date}, "
+              f"мне {self.age} лет "
               f"Моя профессия {self.occupation}. "
               f"У меня {education} высшее образование.")
 
