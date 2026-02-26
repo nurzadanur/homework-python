@@ -1,19 +1,11 @@
 import sqlite3
 
+connection = sqlite3.connect("library.db")
+cursor = connection.cursor()
 
+# Удаляем таблицу students, если она есть
+cursor.execute("DROP TABLE IF EXISTS students")
 
-def create_tables(conn):
-    conn.execute("""
-    CREATE TABLE IF NOT EXISTS students (
-                              name TEXT, 
-                              age INTEGER,
-                              city TEXT
-    )
-    """)
-
-
-if __name__ == '__main__':
-    connection = sqlite3.connect('database.db')
-    create_tables(connection)
-
-    connection.close()
+connection.commit()
+connection.close()
+print("Таблица students удалена")
