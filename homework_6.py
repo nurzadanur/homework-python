@@ -1,64 +1,57 @@
-import sqlite3
+class Streamer:
+    def live(self):
+        return "Запускаю стрим! Подписывайтесь, ставьте лайки!"
+
+    def earn(self):
+        return "Заработал 500 донатов за 2 часа"
 
 
-def create_connection():
-    return sqlite3.connect("content_creators.db")
+class TikToker:
+    def live(self):
+        return "Снимаю трендовый тикток под песню месяца!"
+
+    def viral(self):
+        return "Набрал 3 миллиона просмотров за сутки!"
 
 
-def create_table(cursor):
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS creators (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        class_name TEXT NOT NULL,
-        inheritance TEXT NOT NULL,
-        live_from TEXT NOT NULL
-    )
-    """)
+class Mutant:
+    def live(self):
+        return "Я... я свечусь в темноте... это мой вайб..."
+
+    def superpower(self):
+        return "Летаю и стреляю лазерами из глаз"
 
 
-def clear_table(cursor):
-    cursor.execute("DELETE FROM creators")
+class GlowStreamer(Streamer, Mutant):
+    def ultimate_content(self):
+        return f"{self.live()} | {self.superpower()}"
 
 
-def insert_data(cursor):
-    data = [
-        ("GlowStreamer", "Streamer, Mutant", "Streamer"),
-        ("ViralCyborg", "TikToker, Mutant", "TikToker"),
-        ("DonateMage", "Streamer, TikToker", "Streamer")
-    ]
-
-    cursor.executemany("""
-    INSERT INTO creators (class_name, inheritance, live_from)
-    VALUES (?, ?, ?)
-    """, data)
+class ViralCyborg(TikToker, Mutant):
+    def ultimate_content(self):
+        return f"{self.live()} | {self.superpower()}"
 
 
-def show_data(cursor):
-    cursor.execute("SELECT * FROM creators")
-    rows = cursor.fetchall()
-
-    print("\n=== DATABASE TABLE ===")
-    print(f"{'ID':<5} {'Class':<15} {'Inheritance':<30} {'live() from':<15}")
-    print("-" * 70)
-
-    for row in rows:
-        print(f"{row[0]:<5} {row[1]:<15} {row[2]:<30} {row[3]:<15}")
+class DonateMage(Streamer, TikToker):
+    def ultimate_content(self):
+        return f"{self.live()} | {self.viral()}"
 
 
-def main():
-    conn = create_connection()
-    cursor = conn.cursor()
+glow = GlowStreamer()
+viral = ViralCyborg()
+donate = DonateMage()
 
-    create_table(cursor)
-    clear_table(cursor)
-    insert_data(cursor)
+print("=== MRO ===")
+print("GlowStreamer:", GlowStreamer.mro())
+print("ViralCyborg:", ViralCyborg.mro())
+print("DonateMage:", DonateMage.mro())
 
-    conn.commit()
+print("\n=== live() ===")
+print("GlowStreamer:", glow.live())
+print("ViralCyborg:", viral.live())
+print("DonateMage:", donate.live())
 
-    show_data(cursor)
-
-    conn.close()
-
-
-if __name__ == "__main__":
-    main()
+print("\n=== ultimate_content() ===")
+print("GlowStreamer:", glow.ultimate_content())
+print("ViralCyborg:", viral.ultimate_content())
+print("DonateMage:", donate.ultimate_content())
